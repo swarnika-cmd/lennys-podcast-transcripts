@@ -1,0 +1,43 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: lenny_db
+    environment:
+      - POSTGRES_USER=lenny
+      - POSTGRES_PASSWORD=lenny_password
+      - POSTGRES_DB=lennys_podcast
+    ports:
+      - "5435:5432"
+    volumes:
+      - lenny_db_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  backend:
+    build: ./backend
+    container_name: lenny_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_USER=lenny
+      - POSTGRES_PASSWORD=lenny_password
+      - POSTGRES_DB=lennys_podcast
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=db
+      - OLLAMA_URL=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+
+  frontend:
+    image: nginx:alpine
+    container_name: lenny_frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+
+volumes:
+  lenny_db_data:

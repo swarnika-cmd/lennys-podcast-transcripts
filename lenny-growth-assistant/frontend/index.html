@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lenny Growth Assistant Console</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons for clean tech iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Marked JS for converting markdown responses dynamically -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- 1. Sidebar Panel -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-icon"></div>
+                    <span class="brand-text">Lenny Assistant</span>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot" id="db-status-dot"></span>
+                    <span id="db-status-text">OFFLINE</span>
+                </div>
+            </div>
+            
+            <button class="btn-new-chat" id="btn-new-chat">
+                <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+                <span>NEW TERMINAL</span>
+            </button>
+            
+            <!-- List of previous sessions -->
+            <div class="sessions-list-container" id="sessions-list">
+                <!-- Session items loaded dynamically -->
+            </div>
+            
+            <!-- Configuration footer panel -->
+            <div class="config-panel">
+                <div class="config-group">
+                    <label class="config-label">LLM Core Provider</label>
+                    <select class="select-input" id="provider-select">
+                        <option value="ollama">Ollama (Local Demo)</option>
+                        <option value="openai">OpenAI (Cloud)</option>
+                        <option value="anthropic">Anthropic (Cloud)</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- 2. Chat Conversation Panel -->
+        <main class="chat-panel">
+            <header class="chat-header">
+                <div class="chat-header-title" id="chat-header-title">Active Session</div>
+                <div class="mode-toggle-group">
+                    <button class="mode-btn active" id="mode-standard-btn">Standard RAG</button>
+                    <button class="mode-btn" id="mode-essay-btn">Ship 30 for 30</button>
+                </div>
+            </header>
+            
+            <div class="messages-container" id="messages-container">
+                <!-- Welcome/tutorial message by default -->
+                <div class="message-wrapper assistant">
+                    <div class="message-meta">SYSTEM // INIT SUCCESS</div>
+                    <div class="message-bubble">
+                        Welcome to **The Lenny Growth Assistant Console**. 
+                        
+                        I am an AI assistant strictly grounded in frameworks and insights from Lenny's Podcast transcripts.
+                        
+                        **Tips for verification:**
+                        - You can ask standard growth and product management questions (e.g., *"What is growth strategy?"* or *"What is product market fit?"*).
+                        - Toggle **Ship 30 for 30** mode above to compile retrieved concepts into an actionable ~1,200 word structured essay.
+                        - When HTML code snippets or markdown files are generated, the **Artifact Viewer** will automatically slide open on the right to render them securely.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-panel">
+                <div class="input-wrapper">
+                    <textarea class="chat-textarea" id="chat-input" placeholder="Query transcripts database..." rows="1"></textarea>
+                    <button class="btn-send" id="btn-send" title="Send query">
+                        <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- 3. Sandboxed Artifact Viewer Panel -->
+        <section class="artifact-panel" id="artifact-panel">
+            <header class="artifact-header">
+                <div class="artifact-title-wrapper">
+                    <span class="artifact-label" id="artifact-type-label">HTML Artifact</span>
+                    <span class="artifact-title" id="artifact-title-text">Untitled Artifact</span>
+                </div>
+                <div class="artifact-controls">
+                    <div class="artifact-tab-group">
+                        <button class="artifact-tab-btn active" id="tab-preview-btn">Preview</button>
+                        <button class="artifact-tab-btn" id="tab-code-btn">Code</button>
+                    </div>
+                    <button class="btn-close-artifact-panel" id="btn-close-artifact" title="Close Panel">
+                        <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="artifact-body">
+                <!-- Preview tab (rendered in sandboxed iframe) -->
+                <div class="artifact-tab-content active" id="artifact-tab-preview">
+                    <!-- sandbox attributes isolate the rendered content: scripts enabled, but no local storage/cookies/same-origin access -->
+                    <iframe class="preview-iframe" id="artifact-iframe" sandbox="allow-scripts"></iframe>
+                </div>
+                
+                <!-- Raw code view tab -->
+                <div class="artifact-tab-content" id="artifact-tab-code">
+                    <pre class="raw-code-container" id="artifact-raw-code"></pre>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- Application script -->
+    <script src="app.js"></script>
+</body>
+</html>
