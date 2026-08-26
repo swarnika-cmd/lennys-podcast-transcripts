@@ -8,7 +8,7 @@ def get_ollama_embeddings(text: str) -> List[float]:
         "model": settings.ollama_embed_model,
         "prompt": text
     }
-    resp = requests.post(url, json=payload, timeout=30)
+    resp = requests.post(url, json=payload, timeout=180)
     resp.raise_for_status()
     return resp.json()["embedding"]
 
@@ -39,7 +39,7 @@ def chat_ollama(messages: List[Dict[str, str]]) -> str:
         "messages": messages,
         "stream": False
     }
-    resp = requests.post(url, json=payload, timeout=60)
+    resp = requests.post(url, json=payload, timeout=180)
     resp.raise_for_status()
     return resp.json()["message"]["content"]
 
