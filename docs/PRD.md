@@ -1,6 +1,6 @@
 # Discovery Brief & Product Requirements: The Lenny Growth Assistant
 
-**Prepared by:** Candidate (Forward Deployed Engineer applicant)
+**Prepared by:** Swarnika Somvanshi(Forward Deployed Engineer applicant)
 **Project:** The Lenny Growth Assistant
 
 ---
